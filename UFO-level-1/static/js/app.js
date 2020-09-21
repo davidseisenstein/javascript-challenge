@@ -6,6 +6,20 @@ tableData = data
 
 tBody = d3.select("tbody")
 
+// write a function to convert our from yyyy-mm-dd to dd-mm-yyyy
+function convertDate(inputDate) {
+    var newDateSplit = inputDate.split('-')
+    var newDate = newDateSplit[2] + '/' + newDateSplit [1] + '/' + newDateSplit[0]
+    return newDate
+}
+
+// write another function to add the leading zeroes into the months and days 
+function convertDateTwo(inputDate) {
+    var newDateSplit = inputDate.split('/')
+    var newDate = '0' + newDateSplit[0] + '/' + newDateSplit[1] + '/' + newDateSplit[2]
+    return newDate
+}
+
 // define our function to initiate our standard full table
 function init() {
     // Loop through each object in the tableData array using arrow notation with ufoSighting as our generic iterator
@@ -31,9 +45,12 @@ function filterTable() {
     // Copying the above init function
     tableData.forEach(ufoSighting => {
         // Add conditional to check that the date matches the selected date
-        console.log(`Alien Date = ${alienDate.value}`)
+        var alienDateConverted = convertDate(alienDate.value)
+        var datetimeConverted = convertDateTwo(ufoSighting.datetime)
+        console.log(`Converted = ${alienDateConverted}`)
         console.log(`datetime = ${ufoSighting.datetime}`)
-        if (alienDate == ufoSighting.datetime) {
+        console.log(`datetime Converted = ${datetimeConverted}`)
+        if (alienDateConverted == datetimeConverted) {
             var row = tBody.append("tr")
             // Loop through the object itself using forEach and key, value notation
             Object.entries(ufoSighting).forEach(([key, value]) => {
@@ -41,6 +58,7 @@ function filterTable() {
                 var cell = row.append("td")
                 // grab the value from the object and insert it as the text of the cell
                 cell.text(value);
+            console.log('true')
             });
         }
     });
